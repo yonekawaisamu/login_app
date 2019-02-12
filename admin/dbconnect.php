@@ -1,7 +1,7 @@
 <?php
 
 try {
-    $admindb = new PDO(
+    $db = new PDO(
         'mysql:dbname=login_app;host:127.0.0.1;charset=utf8mb4',
         'root',
         '',

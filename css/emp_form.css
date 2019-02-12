@@ -1,0 +1,50 @@
+h1 {
+    text-align: center;
+}
+
+form {
+    margin: 0 auto;
+    width: 500px;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px solid #CCC;
+}
+
+form div {
+    margin-top: 1rem;
+}
+
+label {
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+}
+
+input {
+    font-size: 1rem;
+    width: 300px;
+    box-sizing: border-box;
+    border: 1px solid #999;
+}
+
+.name {
+    width: 150px;
+}
+
+input:focus {
+    border-color: #000;
+}
+  
+.button {
+    padding-left: 120px;
+}
+  
+button {
+    margin-left: .5rem;
+}
+
+.validation_error {
+    color: red;
+    text-align: center;
+    list-style: none;
+}

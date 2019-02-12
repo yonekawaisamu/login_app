@@ -1,6 +1,6 @@
 <?php
 require('dbconnect.php');
-require('validations.php');
+require('admin_validations.php');
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -20,15 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (isset($error)) {
     $errors['condirmation'] = $error;
   }
-
+  
   if (empty($errors)) {
     $_SESSION['join'] = $_POST;
     header('Location: check_sign_up.php');
     exit();
   }
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <head>
     <meta charset="utf-8">
     <title>フォーム</title>
-    <link rel="stylesheet" type="text/css" href="./css/form.css">
+    <link rel="stylesheet" type="text/css" href="../css/form.css">
   </head>
   <body>
     <header>
@@ -55,15 +53,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <form action="" method="post">
       <div>
         <label for="name">Name:</label>
-        <input type="text" id="name" name="user_name" minlength="6">
+        <input type="text" id="name" name="user_name" minlength="5">
       </div>
       <div>
         <label for="pass">Password:</label>
         <input type="password" id="pass" name="password" minlength="8">
       </div>
       <div>
-        <label for="pass">Confirmation:</label>
-        <input type="password" id="Confirmation" name="confirmation">
+        <label for="confirmation">Confirmation:</label>
+        <input type="password" id="confirmation" name="confirmation">
       </div>
       <div class="button">
         <button type="submit">Send</button>

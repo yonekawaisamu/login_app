@@ -1,11 +1,11 @@
 <?php
 
 function user_name_validation($name) {
-    if (!preg_match('/\A[a-z0-9]{6,50}\z/ui', $name)) {
+    if (!preg_match('/\A[a-z0-9]{5,50}\z/ui', $name)) {
         return 'ユーザー名は5文字以上50文字以下の英数字を入力してください';
     } else {
         require('dbconnect.php');
-        $user = $admindb->prepare('SELECT * FROM admin WHERE user_name=?');
+        $user = $db->prepare('SELECT * FROM admin WHERE user_name=?');
         $user->execute(array(
             $name
         ));
@@ -31,15 +31,3 @@ function confirmation_validation($confirmation, $password) {
         return 'パスワードと確認用パスワードが一致しません';
     }
 }
-
-
-
-
-
-/*
-echo <<<EOM
-<script type="text/javascript">
-  alert( "TEST" )
-</script>
-EOM;
-*/
