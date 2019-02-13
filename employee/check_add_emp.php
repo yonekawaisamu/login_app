@@ -2,6 +2,31 @@
 session_start();
 require('dbconnect.php');
 
+if (!isset($_SESSION['join']) && !isset($_SESSION['id'])) {
+    header('Location: sign_up.php');
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    $name = $_SESSION['join']['last_name'] . ' ' . $_SESSION['join']['first_name'];
+    $emp_user_name = $_SESSION['join']['emp_user_name'];
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['join'])) {
+
+    //データベース登録後、日本語が文字化けする
+    $state = $db->prepare('INSERT INTO employees SET last_name=?, first_name=?, emp_user_name=?, created_at=NOW()');
+    $state->execute(array(
+        $_SESSION['join']['last_name'],
+        $_SESSION['join']['first_name'],
+        $_SESSION['join']['emp_user_name']
+    ));
+
+    unset($_SESSION['join']);
+    
+    header('Location: /login_app/admin/index.php');
+    exit();
+}
 
 ?>
 
@@ -21,11 +46,13 @@ require('dbconnect.php');
         <h1>社員登録確認</h1>
         <form action="" method="POST">
             <div>
+                お名前: <?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?>
             </div>
             <div>
+                ユーザー名: <?php echo htmlspecialchars($emp_user_name, ENT_QUOTES, 'UTF-8') ?>
             </div>
             <div class="button">
-                <button type="submit">登録</button>
+                <a href="add_emp.php">戻る</a>　<button type="submit">Send</button>
             </div>
         </form>
     </main>

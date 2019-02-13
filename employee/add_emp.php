@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $error = emp_user_name_validation($_POST['emp_user_name']);
     if (isset($error)) {
-        $errors['emp_user_name'] = $error; 
+        $errors['emp_user_name'] = $error;
     }
 
     if (empty($errors)) {
