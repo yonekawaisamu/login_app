@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['join'])) {
 
-    //データベース登録後、日本語が文字化けする
     $state = $db->prepare('INSERT INTO employees SET last_name=?, first_name=?, emp_user_name=?, created_at=NOW()');
     $state->execute(array(
         $_SESSION['join']['last_name'],
