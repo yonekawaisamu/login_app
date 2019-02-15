@@ -3,7 +3,7 @@ session_start();
 require('dbconnect.php');
 
 if (!isset($_SESSION['join']) && !isset($_SESSION['id'])) {
-    header('Location: sign_up.php');
+    header('Location: /login_app/admin/sign_in.php');
     exit();
 }
 

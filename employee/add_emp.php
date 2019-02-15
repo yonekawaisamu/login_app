@@ -2,6 +2,11 @@
 session_start();
 require('emp_validations.php');
 
+if (!isset($_SESSION['id'])) {
+    header('Location: /login_app/admin/sign_in.php');
+    exit();
+}
+
 //社員登録機能作成
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = array();
