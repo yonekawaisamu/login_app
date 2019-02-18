@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($error)) {
         $errors['emp_user_name'] = $error;
     }
-
+    
     if (empty($errors)) {
         $_SESSION['join'] = $_POST;
         header('Location: check_add_emp.php');

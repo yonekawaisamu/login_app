@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['join'])) {
     header('Location: sign_in.php');
     exit();
 }
+
 $count = strlen($_SESSION['join']['password']);
 $pass  = str_repeat('*', $count);
 ?>

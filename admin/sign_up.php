@@ -15,10 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (isset($error)) {
     $errors['password'] = $error;
   }
-
+  
   $error = confirmation_validation($_POST['confirmation'], $_POST['password']);
   if (isset($error)) {
-    $errors['condirmation'] = $error;
+    $errors['confirmation'] = $error;
   }
   
   if (empty($errors)) {
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </head>
   <body>
     <header>
-      
+    
     </header>
     <h1>Sign Up</h1>
 
