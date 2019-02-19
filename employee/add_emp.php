@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <header>
-
+        <a href="/login_app/admin/index.php">index</a>
     </header>
     <main>
         <h1>社員登録</h1>
