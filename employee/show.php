@@ -1,5 +1,6 @@
 <?php
 require('dbconnect.php');
+require('UserClass.php');
 session_start();
 
 if (!isset($_SESSION['id'])) {
@@ -11,12 +12,16 @@ if ($id = filter_input(INPUT_GET, 'id')) {
     //社員検索
     $emp_record = $db->prepare('SELECT * FROM employees where id=?');
     $emp_record->execute(array($id));
-    $emp = $emp_record->fetch();
+    $record = $emp_record->fetch();
+
+    //Userインスタンス作成
+    if (isset($record)) {
+        $emp = new User($record['id'], $record['last_name'], $record['first_name'], $record['emp_user_name'], $record['emp_delete_flag']);
+    }
 
     //出退勤履歴取得
     $time_record = $db->prepare('SELECT * FROM time_record where employee_id=? ORDER BY date DESC, time DESC');
     $time_record->execute(array($id));
-    var_dump($time_record->fetch());
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -32,11 +37,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>show</title>
 </head>
 <body>
+    <header>
+        <a href="/login_app/admin/index.php">index</a>
+        <a href="/login_app/employee/search.php">社員一覧</a>
+    </header>
     <h1>showです</h1>
+
     <!-- 社員名編集、社員削除、出退勤履歴、を追加する -->
-    <?php if (isset($emp)): ?>
-        <?php echo $emp['last_name'] ?>
-        <?php echo $emp['first_name'] ?>
+    <?php if (isset($record)): ?> 
+        <?php echo $emp->getName(); ?>
+
+        <form action="" method="POST">
+            <div>
+                <label for="last_name">お名前:</label>
+                <input type="text" name="last_name" maxlength="50" placeholder="姓" class="name" id="last_name" 
+                required value="<?php echo $emp->getLast(); ?>"> 
+                <input type="text" name="first_name" maxlength="50" placeholder="名" class="name" required value="<?php echo $emp->getFirst(); ?>">
+            </div>
+            <div>
+                <label for="emp_user_name">ユーザー名:</label>
+                <input type="text" name="emp_user_name" maxlength="50" id="emp_user_name" required value="<?php echo $emp->getUserName(); ?>">
+            </div>
+            <div class="button">
+                <button type="submit">更新</button>
+            </div>
+        </form>
     <?php endif ?>
 </body>
 </html>
