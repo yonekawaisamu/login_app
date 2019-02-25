@@ -18,11 +18,13 @@ if (!isset($_SESSION['id'])) {
 
     </header>
     <main>
-        <ul>
-            <li><a href="/login_app/employee/add_emp.php">社員追加</a></li>
-            <li><a href="/login_app/employee/search.php">社員一覧</a></li>
-            <li><a href="sign_out.php">ログアウト</a></li>
-        </ul>
+        <div>
+            <ul>
+                <li><a href="/login_app/employee/add_emp.php">社員追加</a></li>
+                <li><a href="/login_app/employee/search.php">社員一覧</a></li>
+                <li><a href="sign_out.php">ログアウト</a></li>
+            </ul>
+        </div>
     </main>
     <footer>
 
