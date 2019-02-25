@@ -41,7 +41,7 @@ class User
     {
         return $this->userName;
     }
-
+    
     public function getFlag()
     {
         return $this->flag;

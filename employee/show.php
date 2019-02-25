@@ -4,11 +4,23 @@ require('UserClass.php');
 session_start();
 
 if (!isset($_SESSION['id'])) {
-    header('Location: sign_in.php');
+    header('Location: /login_app/admin/sign_in.php');
     exit();
 }
 
-if ($id = filter_input(INPUT_GET, 'id')) {
+if (isset($_GET['id']) || isset($_POST['id'])) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $id = $_POST['id'];
+        $update_emp = $db->prepare('UPDATE employees SET last_name=?, first_name=? WHERE id=?');
+        $update_emp->execute(array(
+            $_POST['last_name'],
+            $_POST['first_name'],
+            $id
+        ));
+    }
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $id = $_GET['id'];
+    }
     //社員検索
     $emp_record = $db->prepare('SELECT * FROM employees where id=?');
     $emp_record->execute(array($id));
@@ -22,10 +34,6 @@ if ($id = filter_input(INPUT_GET, 'id')) {
     //出退勤履歴取得
     $time_record = $db->prepare('SELECT * FROM time_record where employee_id=? ORDER BY date DESC, time DESC');
     $time_record->execute(array($id));
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
 }
 
 ?>
@@ -43,9 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </header>
     <h1>showです</h1>
 
-    <!-- 社員名編集、社員削除、出退勤履歴、を追加する -->
+    <!-- 社員削除、出退勤履歴、を追加する -->
     <?php if (isset($record)): ?> 
-        <?php echo $emp->getName(); ?>
+        <p>現在のお名前： <?php echo $emp->getName(); ?></p>
+        <p>ユーザー名： <?php echo $emp->getUserName(); ?></p>
 
         <form action="" method="POST">
             <div>
@@ -54,10 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 required value="<?php echo $emp->getLast(); ?>"> 
                 <input type="text" name="first_name" maxlength="50" placeholder="名" class="name" required value="<?php echo $emp->getFirst(); ?>">
             </div>
-            <div>
-                <label for="emp_user_name">ユーザー名:</label>
-                <input type="text" name="emp_user_name" maxlength="50" id="emp_user_name" required value="<?php echo $emp->getUserName(); ?>">
-            </div>
+            <input type="hidden" name="id" value="<?php echo $emp->getId(); ?>">
             <div class="button">
                 <button type="submit">更新</button>
             </div>

@@ -3,24 +3,24 @@ require('dbconnect.php');
 session_start();
 
 if (!isset($_SESSION['id'])) {
-    header('Location: sign_in.php');
+    header('Location: /login_app/admin/sign_in.php');
     exit();
 }
 
+//検索機能完了
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    // フルネームの場合の処理を考える
     if ($search_word = filter_input(INPUT_POST, 'word', FILTER_SANITIZE_SPECIAL_CHARS)) {
+        $search_word = str_replace(array(" ", "　"), "", $search_word);
         $search_word = '%' . $search_word . '%';
-        $records = $db->prepare('SELECT * FROM employees WHERE last_name LIKE ? OR first_name LIKE ? ORDER BY last_name DESC');
+        $records = $db->prepare('SELECT * FROM employees WHERE CONCAT(last_name, first_name) LIKE ? OR last_name LIKE ? OR first_name LIKE ? ORDER BY last_name ASC');
         $records->execute(array(
+            $search_word,
             $search_word,
             $search_word
         ));
     } else {
-        $records = $db->query('SELECT * FROM employees ORDER BY last_name DESC');
+        $records = $db->query('SELECT * FROM employees ORDER BY last_name ASC');
     }
-
 }
 ?>
 
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <main>
 
         <form action="" method="POST">
-            <input type="text" name="word">
+            <input type="text" name="word" autofocus>
             <button type="submit">検索</button>
         </form>
 
