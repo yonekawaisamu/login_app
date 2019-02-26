@@ -87,7 +87,8 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
 </head>
 <body>
     <header>
-        <a href="./admin/sign_in.php">管理者ログイン</a>
+        <a href="/login_app/admin/sign_in.php">管理者ログイン</a>
+        <a href="/login_app/admin/sign_up.php">管理者登録</a>
     </header>
 
     <?php if ($error == 'code1'): ?>

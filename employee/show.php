@@ -11,14 +11,21 @@ if (!isset($_SESSION['id'])) {
 if (isset($_GET['id']) || isset($_POST['id'])) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id     = $_POST['id'];
-        //$status = isset($_POST['status']) ? 1 : 0;
+        $status = isset($_POST['status']) ? 1 : 0;
+
         $update_emp = $db->prepare('UPDATE employees SET last_name=?, first_name=?, emp_delete_flag=? WHERE id=?');
         $update_emp->execute(array(
             $_POST['last_name'],
             $_POST['first_name'],
-           // $status,
+            $status,
             $id
         ));
+
+        //削除が選択された場合は、検索ページへ移動
+        if ($status == 1) {
+            header('Location: /login_app/employee/search.php');
+            exit();
+        }
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -67,10 +74,10 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
                 required value="<?php echo $emp->getLast(); ?>"> 
                 <input type="text" name="first_name" maxlength="50" placeholder="名" class="name" required value="<?php echo $emp->getFirst(); ?>">
             </div>
-            <!-- <div>
+            <div>
+                <p>削除する場合、以下にチェックをいれてください。</P>
                 <input type="radio" name="status" value="1">削除
             </div>
-            -->
             <input type="hidden" name="id" value="<?php echo $emp->getId(); ?>">
             <div class="button">
                 <button type="submit">更新</button>

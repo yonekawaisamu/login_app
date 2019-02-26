@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </head>
   <body>
     <header>
-    
+      <a href="/login_app/time_record.php">タイムカード</a>
     </header>
     <h1>Sign Up</h1>
 

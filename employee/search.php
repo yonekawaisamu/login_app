@@ -12,14 +12,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($search_word = filter_input(INPUT_POST, 'word', FILTER_SANITIZE_SPECIAL_CHARS)) {
         $search_word = str_replace(array(" ", "　"), "", $search_word);
         $search_word = '%' . $search_word . '%';
-        $records = $db->prepare('SELECT * FROM employees WHERE CONCAT(last_name, first_name) LIKE ? OR last_name LIKE ? OR first_name LIKE ? ORDER BY last_name DESC');
+        $records = $db->prepare('SELECT * FROM employees WHERE emp_delete_flag=0 CONCAT(last_name, first_name) LIKE ? OR last_name LIKE ? OR first_name LIKE ? ORDER BY last_name DESC');
         $records->execute(array(
             $search_word,
             $search_word,
             $search_word
         ));
     } else {
-        $records = $db->query('SELECT * FROM employees ORDER BY last_name DESC');
+        $records = $db->query('SELECT * FROM employees WHERE emp_delete_flag=0 ORDER BY last_name DESC');
     }
 }
 ?>
@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <a href="/login_app/admin/index.php">index</a>
     </header>
     <main>
+        <a href="/login_app/employee/delete_emp.php">削除した社員一覧</a>
 
         <form action="" method="POST">
             <input type="text" name="word" autofocus>
