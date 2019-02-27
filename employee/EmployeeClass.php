@@ -1,6 +1,6 @@
 <?php
 //ユーザーshowで使用する案
-class User 
+class Employee 
 {
     private $id;
     private $last;
