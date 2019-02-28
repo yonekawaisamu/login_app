@@ -10,21 +10,22 @@ if (!isset($_SESSION['id'])) {
 
 if (isset($_GET['id']) || isset($_POST['id'])) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $id     = $_POST['id'];
+        $id = $_POST['id'];
 
-        //チェック無しの場合の挙動がへんなので修正予定
-        $status = isset($_POST['status']) && $_POST['status'] == 1 ? 1 : 0;
+        // 以下代入の条件を考える02/28
+        $flag = isset($_POST['flag']) && $_POST['flag'] == 1 ? 1 : 0;
+        var_dump($flag);
 
         $update_emp = $db->prepare('UPDATE employees SET last_name=?, first_name=?, emp_delete_flag=? WHERE id=?');
         $update_emp->execute(array(
             $_POST['last_name'],
             $_POST['first_name'],
-            $status,
+            $flag,
             $id
         ));
 
         //削除が選択された場合は、検索ページへ移動
-        if ($status == 1) {
+        if ($flag == 1) {
             header('Location: /login_app/employee/search.php');
             exit();
         }
@@ -71,27 +72,27 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 
         <form action="" method="POST">
             <div>
-                <label for="last_name">お名前:</label>
-                <input type="text" name="last_name" maxlength="50" placeholder="姓" class="name" id="last_name" 
-                required value="<?php echo $emp->getLast(); ?>"> 
-                <input type="text" name="first_name" maxlength="50" placeholder="名" class="name" required value="<?php echo $emp->getFirst(); ?>">
-            </div>
-            <div>
                 <?php if ($emp->getFlag() == 0): ?>
+                    <!-- 社員が生きている場合 -->
+                    <div>
+                        <label for="last_name">お名前:</label>
+                        <input type="text" name="last_name" maxlength="50" placeholder="姓" class="name" id="last_name" required value="<?php echo $emp->getLast(); ?>"> 
+                        <input type="text" name="first_name" maxlength="50" placeholder="名" class="name" required value="<?php echo $emp->getFirst(); ?>">
+                    </div>
                     <p>削除する場合、以下にチェックをいれてください。</P>
-                    <input type="radio" name="status" value="1">削除
+                    <input type="checkbox" name="flag" value="1">削除
                 <?php elseif ($emp->getFlag() == 1): ?>
-                    <p>社員を復元する場合、以下にチェックをいれてください。</P>
-                    <input type="radio" name="status" value="0">復元
+                    <!-- 社員が削除済みの場合 -->
+                    <input type="hidden" name="last_name" value="<?php echo $emp->getLast(); ?>">
+                    <input type="hidden" name="first_name" value="<?php echo $emp->getFirst(); ?>">
+                    <input type="hidden" name="flag" value="0">
                 <?php endif; ?>
             </div>
             <input type="hidden" name="id" value="<?php echo $emp->getId(); ?>">
             <div class="button">
-                <button type="submit">更新</button>
+                <button type="submit"><?php echo $emp->getFlag() == 0 ? '更新' : '社員を復元'; ?></button>
             </div>
         </form>
-
-        <!-- flagが１(削除済み)の社員の場合の処理 -->
     <?php endif ?>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?php
-//ユーザーshowで使用する案
+
 class Employee 
 {
     private $id;
