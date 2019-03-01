@@ -19,7 +19,7 @@ class Employee
 
     public function getName()
     {
-        return $this->last . ' ' . $this->first;
+        return htmlspecialchars($this->last . ' ' . $this->first, ENT_QUOTES, 'UTF-8');
     }
 
     public function getId()
@@ -29,12 +29,12 @@ class Employee
 
     public function getLast()
     {
-        return $this->last;
+        return htmlspecialchars($this->last, ENT_QUOTES, 'UTF-8');
     }
 
     public function getFirst()
     {
-        return $this->first;
+        return htmlspecialchars($this->first, ENT_QUOTES, 'UTF-8');
     }
 
     public function getUserName()

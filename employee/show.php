@@ -14,7 +14,6 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 
         // 以下代入の条件を考える02/28
         $flag = isset($_POST['flag']) && $_POST['flag'] == 1 ? 1 : 0;
-        var_dump($flag);
 
         $update_emp = $db->prepare('UPDATE employees SET last_name=?, first_name=?, emp_delete_flag=? WHERE id=?');
         $update_emp->execute(array(

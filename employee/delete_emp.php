@@ -1,6 +1,13 @@
 <?php
 //削除した社員一覧作成予定
 require('dbconnect.php');
+session_start();
+
+if (!isset($_SESSION['id'])) {
+    header('Location: /login_app/admin/sign_in.php');
+    exit();
+}
+
 
 $emps = $db->query('SELECT * FROM employees WHERE emp_delete_flag=1');
 

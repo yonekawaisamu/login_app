@@ -11,8 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         setcookie('status', $status);
         $_COOKIE['status'] = $status;
 
-        $emp = $db->prepare('SELECT * FROM employees WHERE emp_user_name=?');
-        $emp->execute(array($name));
+        $flag = 0;
+        $emp = $db->prepare('SELECT * FROM employees WHERE emp_user_name=? AND emp_delete_flag=?');
+        $emp->execute(array(
+            $name,
+            $flag
+        ));
 
         // 社員が存在するか？
         if ($user = $emp->fetch()) {
