@@ -2,6 +2,11 @@
 require('dbconnect.php');
 session_start();
 
+if (isset($_SESSION['id'])) {
+  header('Location: index.php');
+  exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $state = $db->prepare('SELECT * FROM admin WHERE user_name=?');
   $state->execute(array(
@@ -11,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   
   $errors = array();
   if ($user && password_verify($_POST['password'], $user['password']) && $user['delete_flag'] == 0) {
-    
     //セッションIDの変更
     session_regenerate_id(true);
     $_SESSION['id'] = $user['id'];
@@ -21,21 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors['sign_in'] = 'ユーザー名またはパスワードが間違っています';
   }
 }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="ja">
   <head>
     <meta charset="utf-8">
-    <title>sign_in</title>
+    <title>管理者ログイン</title>
     <link rel="stylesheet" type="text/css" href="../css/form.css">
   </head>
   <body>
     <header>
         <a href="/login_app/time_record.php">タイムカード</a>
     </header>
-    <h1>Sign In</h1>
+    <h1>管理者ログイン</h1>
 
     <?php if (!empty($errors)): ?>
       <ul class="validation_error">
@@ -47,15 +50,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <form action="" method="post">
       <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="user_name">
+        <label for="name">ユーザー名:</label>
+        <input type="text" id="name" name="user_name" autofocus>
       </div>
       <div>
-        <label for="pass">Password:</label>
+        <label for="pass">パスワード:</label>
         <input type="password" id="pass" name="password">
       </div>
       <div class="button">
-        <button type="submit">Send</button>
+        <button type="submit">ログイン</button>
       </div>
     </form>
   </body>

@@ -2,6 +2,23 @@ h1 {
     text-align: center;
 }
 
+header {
+    height: 50px;
+    background-color: #EEEEEE;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    font-size: 20px;
+}
+
 form {
     margin: 0 auto;
     width: 500px;

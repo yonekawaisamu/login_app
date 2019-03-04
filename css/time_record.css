@@ -1,3 +1,8 @@
+header {
+    height: 50px;
+    background-color: #EEEEEE;
+}
+
 .time_records {
     width: 500px;
     height: 500px;

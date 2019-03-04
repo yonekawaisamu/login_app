@@ -13,20 +13,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['join'])) {
-
     $state = $db->prepare('INSERT INTO employees SET last_name=?, first_name=?, emp_user_name=?, created_at=NOW()');
     $state->execute(array(
         $_SESSION['join']['last_name'],
         $_SESSION['join']['first_name'],
         $_SESSION['join']['emp_user_name']
     ));
-
     unset($_SESSION['join']);
     
     header('Location: /login_app/admin/index.php');
     exit();
 }
-
 ?>
 
 
@@ -35,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['join'])) {
 <head>
     <meta charset="utf-8" />
     <title>社員登録確認</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../css/emp_form.css">
 </head>
 <body>

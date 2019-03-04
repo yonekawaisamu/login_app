@@ -12,20 +12,19 @@ if (!isset($_SESSION['id'])) {
 <head>
     <meta charset="utf-8" />
     <title>管理者設定画面</title>
+    <link rel="stylesheet" type="text/css" href="../css/admin_index.css">
 </head>
 <body>
     <header>
 
     </header>
-    <main>
-        <div>
-            <ul>
-                <li><a href="/login_app/employee/add_emp.php">社員追加</a></li>
-                <li><a href="/login_app/employee/search.php">社員一覧</a></li>
-                <li><a href="sign_out.php">ログアウト</a></li>
-            </ul>
-        </div>
-    </main>
+    <div class="main">
+        <ul>
+            <a href="/login_app/employee/add_emp.php"><div class="link-box"><li>社員追加</li></div></a>
+            <a href="/login_app/employee/search.php"><div class="link-box"><li>社員検索</li></div></a>
+            <a href="sign_out.php"><div class="link-box"><li>ログアウト</li></div></a>
+        </ul>
+    </div>
     <footer>
 
     </footer>

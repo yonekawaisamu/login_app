@@ -5,7 +5,7 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $errors = array();
-
+  
   $error = user_name_validation($_POST['user_name']);
   if (isset($error)) {
     $errors['user_name'] = $error;
@@ -33,14 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="ja">
   <head>
     <meta charset="utf-8">
-    <title>フォーム</title>
+    <title>管理者登録</title>
     <link rel="stylesheet" type="text/css" href="../css/form.css">
   </head>
   <body>
     <header>
       <a href="/login_app/time_record.php">タイムカード</a>
     </header>
-    <h1>Sign Up</h1>
+    <h1>管理者登録</h1>
 
     <?php if (!empty($errors)): ?>
       <ul class="validation_error">
@@ -52,19 +52,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <form action="" method="post">
       <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="user_name" minlength="5">
+        <label for="name">ユーザー名:</label>
+        <input type="text" id="name" name="user_name" minlength="5" autofocus>
       </div>
       <div>
-        <label for="pass">Password:</label>
+        <label for="pass">パスワード:</label>
         <input type="password" id="pass" name="password" minlength="8">
       </div>
       <div>
-        <label for="confirmation">Confirmation:</label>
+        <label for="confirmation">パスワード確認:</label>
         <input type="password" id="confirmation" name="confirmation">
       </div>
       <div class="button">
-        <button type="submit">Send</button>
+        <button type="submit">登録</button>
       </div>
     </form>
   </body>
