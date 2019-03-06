@@ -7,7 +7,6 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
-//社員登録機能作成
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = array();
     

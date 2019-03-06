@@ -27,3 +27,7 @@ table td {
 button {
     margin: 10px;
 }
+
+.validation_error {
+    color: red;
+}

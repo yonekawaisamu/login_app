@@ -1,5 +1,5 @@
 <?php
-//削除した社員一覧作成予定
+//削除した社員一覧
 require('dbconnect.php');
 session_start();
 
