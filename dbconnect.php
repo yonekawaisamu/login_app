@@ -11,5 +11,7 @@ try {
         )
     );
 } catch (EXception $e) {
-    die($e->getMessage());
+    $error = $e->getMessage();
+    header('Location: 500page.html');
+    exit();
 }
