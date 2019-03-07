@@ -10,28 +10,31 @@ if (!isset($_SESSION['id'])) {
 }
 
 if (isset($_GET['id']) || isset($_POST['id'])) {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $id = $_POST['id'];
-        $error = last_first_validation($_POST['last_name'], $_POST['first_name']);
-        if (!isset($error)) {
-            $flag = isset($_POST['flag']) && $_POST['flag'] == 1 ? 1 : 0;
-            $update_emp = $db->prepare('UPDATE employees SET last_name=?, first_name=?, emp_delete_flag=? WHERE id=?');
-            $update_emp->execute(array(
-                $_POST['last_name'],
-                $_POST['first_name'],
-                $flag,
-                $id
-            ));
-            //削除が選択された場合は、移動
-            if ($flag == 1) {
-                header('Location: /login_app/employee/emp_delete.php');
-                exit();
+    switch ($_SERVER['REQUEST_METHOD']) {
+        case 'POST':
+            $id = $_POST['id'];
+            $error = last_first_validation($_POST['last_name'], $_POST['first_name']);
+            if (!isset($error)) {
+                $flag = isset($_POST['flag']) && $_POST['flag'] == 1 ? 1 : 0;
+                $update_emp = $db->prepare('UPDATE employees SET last_name=?, first_name=?, emp_delete_flag=? WHERE id=?');
+                $update_emp->execute(array(
+                    $_POST['last_name'],
+                    $_POST['first_name'],
+                    $flag,
+                    $id
+                ));
+                //削除が選択された場合は、移動
+                if ($flag == 1) {
+                    header('Location: /login_app/employee/emp_delete.php');
+                    exit();
+                }
             }
-        }
-    }
-
-    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $id = $_GET['id'];
+            break;
+        case 'GET':
+            $id = $_GET['id'];
+            break;
+        default:
+            break;
     }
     
     //社員検索
