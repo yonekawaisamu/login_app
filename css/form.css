@@ -45,3 +45,8 @@ button {
     text-align: center;
     list-style: none;
 }
+
+.table-left {
+    text-align: center;
+    width: 120px;
+}
