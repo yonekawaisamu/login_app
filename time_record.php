@@ -97,11 +97,11 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
             <form action="" method="POST">
                 <div>
                     <?php if (isset($_COOKIE['status'])): ?>
-                        <input type="radio" name="status" value="0" <?php echo $_COOKIE['status'] == 0 ? 'checked' : ''; ?>>出勤
-                        <input type="radio" name="status" value="1" <?php echo $_COOKIE['status'] == 1 ? 'checked' : ''; ?>>退勤
+                        <input type="radio" class="radio" name="status" value="0" <?php echo $_COOKIE['status'] == 0 ? 'checked' : ''; ?>>出勤
+                        <input type="radio" class="radio" name="status" value="1" <?php echo $_COOKIE['status'] == 1 ? 'checked' : ''; ?>>退勤
                     <?php else: ?>
-                        <input type="radio" name="status" value="0" checked>出勤
-                        <input type="radio" name="status" value="1">退勤
+                        <input type="radio" class="radio" name="status" value="0" checked>出勤
+                        <input type="radio" class="radio" name="status" value="1">退勤
                     <?php endif; ?>
                 </div>
                 <div>
@@ -134,6 +134,7 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
         let today          = new Date();
         let number         = today.getDay();
         let jp_day_of_week = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"];
+        
         time(jp_day_of_week[number]);
         function time(day_of_week){
             let now = new Date();

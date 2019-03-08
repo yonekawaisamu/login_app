@@ -90,7 +90,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
                         </tr>
                         <tr>
                             <td class="table-right">社員削除:</td>
-                            <td><input type="checkbox" name="flag" value="1"></td>
+                            <td><input type="checkbox" class="check" name="flag" value="1"></td>
                             <td></td>
                         </tr>
                     <?php elseif ($emp->getFlag() == 1): ?>

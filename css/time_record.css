@@ -17,3 +17,7 @@ td {
 .in {
     background-color: #CBFFD3;
 }
+
+input.radio {
+    transform: scale(1.5);
+}
