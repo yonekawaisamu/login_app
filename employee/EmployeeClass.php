@@ -39,7 +39,7 @@ class Employee
 
     public function getUserName()
     {
-        return $this->userName;
+        return htmlspecialchars($this->userName, ENT_QUOTES, 'UTF-8');
     }
     
     public function getFlag()
