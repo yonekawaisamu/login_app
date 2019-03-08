@@ -9,3 +9,11 @@ header {
     background-color: antiquewhite;
     overflow: scroll;
 }
+
+td {
+    padding: 2px;
+}
+
+.in {
+    background-color: #CBFFD3;
+}

@@ -3,7 +3,7 @@ require('dbconnect.php');
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    // POSTでuser_name,statusが正しく送られているか？
+    // POSTでuser_name,statusが正しく送られていたらtrue？
     if (isset($_POST['user_name']) && isset($_POST['status'])) {
         $name = $_POST['user_name'];
         $status = $_POST['status'];
@@ -11,24 +11,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         setcookie('status', '', time() - 3600, '/');
         setcookie('status', $status);
         $_COOKIE['status'] = $status;
-        $emp = $db->prepare('SELECT * FROM employees WHERE emp_user_name=? AND emp_delete_flag=?');
-        $emp->execute(array(
+        $emp_state = $db->prepare('SELECT * FROM employees WHERE emp_user_name=? AND emp_delete_flag=?');
+        $emp_state->execute(array(
             $name,
             $flag
         ));
         // 社員が存在したらtrue
-        if ($user = $emp->fetch()) {
+        if ($emp = $emp_state->fetch()) {
             switch ($status) {
                 case 1: //statusが退勤の場合
                     $search_in_time = $db->prepare('SELECT * FROM time_record WHERE employee_id=? AND date=? AND status="0"');
                     $search_in_time->execute(array(
-                        $user['id'],
+                        $emp['id'],
                         date('Y-m-d'),
                     ));
                     $in_record = $search_in_time->fetch();
                     $search_out_time = $db->prepare('SELECT * FROM time_record WHERE employee_id=? AND date=? AND status="1"');
                     $search_out_time->execute(array(
-                        $user['id'],
+                        $emp['id'],
                         date('Y-m-d'),
                     ));
                     $out_record = $search_out_time->fetch();
@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     } elseif ($out_record != false) {
                         $error = 'code4';
                     } else {
-                        $state = $db->prepare('INSERT INTO time_record SET employee_id=?, date=?, time=?, status=?');
-                        $state->execute(array(
-                            $user['id'],
+                        $add_state = $db->prepare('INSERT INTO time_record SET employee_id=?, date=?, time=?, status=?');
+                        $add_state->execute(array(
+                            $emp['id'],
                             date('Y-m-d'),
                             date('H:i:s'),
                             $status
@@ -49,14 +49,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 case 0: //statusが出勤の場合
                     $time = $db->prepare('SELECT * FROM time_record WHERE employee_id=? AND date=? AND status=?');
                     $time->execute(array(
-                        $user['id'],
+                        $emp['id'],
                         date('Y-m-d'),
                         $status
                     ));
                     if (!$record = $time->fetch()) {
-                        $state = $db->prepare('INSERT INTO time_record SET employee_id=?, date=?, time=?, status=?');
-                        $state->execute(array(
-                            $user['id'],
+                        $add_state = $db->prepare('INSERT INTO time_record SET employee_id=?, date=?, time=?, status=?');
+                        $add_state->execute(array(
+                            $emp['id'],
                             date('Y-m-d'),
                             date('H:i:s'),
                             $status
@@ -82,7 +82,7 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="./css/time_record.css">
 </head>
-<body>
+<body link="#337ab7" vlink="#337ab7">
     <header>
         <a href="/login_app/admin/sign_in.php">管理者ログイン</a>
         <a href="/login_app/admin/sign_up.php">管理者登録</a>
@@ -116,12 +116,16 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
 
     <div class="right">
         <div class="time_records">
-            <ul>
+            <table>
                 <?php while ($t = $time_records->fetch()): ?>
                     <?php $status = $t['status'] == 0 ? '出勤' : '退勤' ?>
-                    <li><?php echo $t['last_name'] . ' ' . $t['first_name'] . ' ' . $t['date'] . ' ' . $t['time'] . ' ' . $status; ?></li>
+                    <tr>
+                        <td><?php echo $t['last_name'] . ' ' . $t['first_name']; ?></td>
+                        <td><?php echo $t['date']. ' ' . $t['time']; ?></td>
+                        <td id="status" class="in"><?php echo $status; ?></td>
+                    </tr>
                 <?php endwhile; ?>
-            </ul>
+            </table>
        </div>
     </div>
     </div>

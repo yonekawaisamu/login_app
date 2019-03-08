@@ -38,12 +38,12 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
     }
     
     //社員検索
-    $emp_record = $db->prepare('SELECT * FROM employees where id=?');
-    $emp_record->execute(array($id));
-    $record = $emp_record->fetch();
+    $emp_state = $db->prepare('SELECT * FROM employees where id=?');
+    $emp_state->execute(array($id));
+    $emp_record = $emp_state->fetch();
     //Userインスタンス作成
-    if (isset($record)) {
-        $emp = new Employee($record['id'], $record['last_name'], $record['first_name'], $record['emp_user_name'], $record['emp_delete_flag']);
+    if (isset($emp_record)) {
+        $emp = new Employee($emp_record['id'], $emp_record['last_name'], $emp_record['first_name'], $emp_record['emp_user_name'], $emp_record['emp_delete_flag']);
     }
 }
 ?>
@@ -61,64 +61,65 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
         <a href="/login_app/admin/index.php">管理者トップ画面</a>
     </header>
 
-    <!-- 社員削除、出退勤履歴、を追加する -->
     <div class="main">
-    <a href="/login_app/employee/search.php">社員検索</a>
-    <h1>社員編集</h1>
-    <?php if (isset($error)): ?>
-        <ul class="validation_error">
-            <li><?php echo $error; ?></li>
-        </ul>
-    <?php endif; ?>
+        <a href="/login_app/employee/search.php">社員検索</a>
+        <h1>社員編集</h1>
+        <?php if (isset($error)): ?>
+            <ul class="validation_error">
+                <li><?php echo $error; ?></li>
+            </ul>
+        <?php endif; ?>
 
-    <?php if (isset($record)): ?> 
-        <table>
-            <tr>
-                <td class="table-right">現在のお名前：</td>
-                <td class="table-left"><?php echo $emp->getName(); ?></td>
-            </tr>
-            <tr>
-                <td class="table-right">ユーザー名：</td>
-                <td class="table-left"><?php echo $emp->getUserName(); ?></td>
-            </tr>
-        </table>
-        <div>
-            <form action="" method="POST">
-                <div>
+        <?php if (isset($emp_record)): ?> 
+            <table>
+                <tr>
+                    <td class="table-right">現在のお名前:</td>
+                    <td class="table-left"><?php echo $emp->getName(); ?></td>
+                </tr>
+                <tr>
+                    <td class="table-right">ユーザー名:</td>
+                    <td class="table-left"><?php echo $emp->getUserName(); ?></td>
+                </tr>
+                <form action="" method="POST">
                     <?php if ($emp->getFlag() == 0): ?>
                         <!-- 社員が生きている場合 -->
-                        <div>
-                            <label for="last_name">お名前:</label>
-                            <input type="text" name="last_name" maxlength="50" placeholder="姓" class="name" id="last_name" required value="<?php echo $emp->getLast(); ?>"> 
-                            <input type="text" name="first_name" maxlength="50" placeholder="名" class="name" required value="<?php echo $emp->getFirst(); ?>">
-                        </div>
-                        <div class="check">
-                            社員削除:<input type="checkbox" name="flag" value="1">
-                        </div>
+                        <tr>
+                            <td class="table-right">お名前変更:</td>
+                            <td><input type="text" name="last_name" maxlength="50" placeholder="姓" class="name" required value="<?php echo $emp->getLast(); ?>"></td>
+                            <td><input type="text" name="first_name" maxlength="50" placeholder="名" class="name" required value="<?php echo $emp->getFirst(); ?>"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-right">社員削除:</td>
+                            <td><input type="checkbox" name="flag" value="1"></td>
+                            <td></td>
+                        </tr>
                     <?php elseif ($emp->getFlag() == 1): ?>
-                        <!-- 社員が削除済みの場合 -->
-                        <input type="hidden" name="last_name" value="<?php echo $emp->getLast(); ?>">
-                        <input type="hidden" name="first_name" value="<?php echo $emp->getFirst(); ?>">
-                        <input type="hidden" name="flag" value="0">
+                            <!-- 社員が削除済みの場合 -->
+                            <input type="hidden" name="last_name" value="<?php echo $emp->getLast(); ?>">
+                            <input type="hidden" name="first_name" value="<?php echo $emp->getFirst(); ?>">
+                            <input type="hidden" name="flag" value="0">
                     <?php endif; ?>
-                </div>
-                <input type="hidden" name="id" value="<?php echo $emp->getId(); ?>">
-                <div class="button">
-                    <button type="submit"><?php echo $emp->getFlag() == 0 ? '更新' : '社員を復元'; ?></button>
-                </div>
-            </form>
-        </div>
+                    <input type="hidden" name="id" value="<?php echo $emp->getId(); ?>">
+                    <tr>
+                        <td class="table-right"></td>
+                        <td><button type="submit"><?php echo $emp->getFlag() == 0 ? '更新' : '社員を復元'; ?></button></td>
+                        <td></td>
+                    </tr>
+                </form>
+            </table>
 
-        <div>
-            <h2>出退勤履歴を検索</h2>
-            <p>表示したい年月を指定してください</p>
-            <form action="time_record_history.php" method="POST">
-                <input type="hidden" name="id" value="<?php echo $emp->getId(); ?>">
-                <input type="month" name="y_m" value="<?php echo date("Y-m"); ?>" required>
-                <input type="submit" value="検索">
-            </form>
-        </div>
-    <?php endif ?>
+            <hr>
+
+            <div>
+                <h2><?php echo $emp->getName(); ?>さんの出退勤履歴を検索</h2>
+                <p>表示したい年月を指定してください</p>
+                <form action="time_record_history.php" method="POST">
+                    <input type="hidden" name="id" value="<?php echo $emp->getId(); ?>">
+                    <input type="month" name="y_m" value="<?php echo date("Y-m"); ?>" required>
+                    <input type="submit" value="検索">
+                </form>
+            </div>
+        <?php endif ?>
     </div>
 </body>
 </html>
