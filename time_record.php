@@ -131,12 +131,15 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
     </div>
 
     <script>
-        time();
-        function time(){
-            var now = new Date();
-            document.getElementById("time").innerHTML = now.toLocaleString();
+        let today          = new Date();
+        let number         = today.getDay();
+        let jp_day_of_week = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"];
+        time(jp_day_of_week[number]);
+        function time(day_of_week){
+            let now = new Date();
+            document.getElementById("time").innerHTML = now.toLocaleString() + ' ' + day_of_week;
         }
-        setInterval('time()',1000);
+        setInterval('time(jp_day_of_week[number])',1000);
     </script>
 
     <?php if ($error == 'code1'): ?>
