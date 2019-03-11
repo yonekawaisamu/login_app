@@ -1,5 +1,11 @@
 <?php
 
+function hurigana_validation($last, $first) {
+    if (!preg_match('/\A[ぁ-んー]{1,50}\z/u', $last) || !preg_match('/\A[ぁ-ん]{1,50}\z/u', $first)) {
+        return 'ふりがなは、ひらがな５０文字以下で入力してください';
+    }
+}
+
 function last_first_validation($last_name, $first_name) {
     if ($last_name == "" || $first_name == "") {
         return 'お名前を入力してください';

@@ -18,7 +18,7 @@ $emps = $db->query('SELECT * FROM employees WHERE emp_delete_flag=1');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../css/emp_delete.css">
 </head>
-<body>
+<body link="#337ab7" vlink="#337ab7">
     <header>
         <a href="/login_app/admin/index.php">管理者トップ画面</a>
     </header>

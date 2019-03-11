@@ -42,8 +42,17 @@ button {
 
 .validation_error {
     color: red;
-    text-align: center;
+}
+
+.msg {
+    color: #0066FF;
+}
+
+ul {
     list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
 
 .table-left {

@@ -16,11 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $serach_date,
         $emp_id
     ));
-
+    
     $emp_state = $db->prepare('SELECT * FROM employees WHERE id=?');
     $emp_state->execute(array($emp_id));
     $emp_record = $emp_state->fetch();
-    $emp = new Employee($emp_record['id'], $emp_record['last_name'], $emp_record['first_name'], $emp_record['emp_user_name'], $emp_record['emp_delete_flag']);
+    $emp = new Employee($emp_record['id'], $emp_record['last_hurigana'], $emp_record['first_hurigana'], $emp_record['last_name'], $emp_record['first_name'], $emp_record['emp_user_name'], $emp_record['emp_delete_flag']);
 }
 ?>
 
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
+<body link="#337ab7" vlink="#337ab7">
     <header>
         <a href="./show.php?id=<?php echo $emp->getId(); ?>">戻る</a>
     </header>

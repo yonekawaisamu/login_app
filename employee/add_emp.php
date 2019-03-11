@@ -9,6 +9,10 @@ if (!isset($_SESSION['id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = array();
+    $error =  hurigana_validation($_POST['last_hurigana'], $_POST['first_hurigana']);
+    if (isset($error)) {
+        $errors['hurigana'] = $error;
+    }
     
     $error = last_first_validation($_POST['last_name'], $_POST['first_name']);
     if (isset($error)) {
@@ -36,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../css/emp_form.css">
 </head>
-<body>
+<body link="#337ab7" vlink="#337ab7">
     <header>
         <a href="/login_app/admin/index.php">管理者トップ画面</a>
     </header>
@@ -51,6 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php endif; ?>
 
         <form action="" method="POST">
+            <div>
+                <label for="name">ふりがな:</label>
+                <input type="text" name="last_hurigana" maxlength="50" placeholder="せい" class="name" id="name" required> 
+                <input type="text" name="first_hurigana" maxlength="50" placeholder="めい" class="name" required>
+            </div>
             <div>
                 <label for="last_name">お名前:</label>
                 <input type="text" name="last_name" maxlength="50" placeholder="姓" class="name" id="last_name" required> 

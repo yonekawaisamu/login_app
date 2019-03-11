@@ -5,7 +5,7 @@ header {
 
 .time_records {
     width: 500px;
-    height: 500px;
+    height:500px;
     background-color: antiquewhite;
     overflow: scroll;
 }
@@ -16,6 +16,10 @@ td {
 
 .in {
     background-color: #CBFFD3;
+}
+
+.out {
+    background-color: #FFBEDA;
 }
 
 input.radio {

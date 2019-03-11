@@ -1,7 +1,7 @@
 <?php
 require('dbconnect.php');
-$error = '';
 
+$error = '';
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // POSTでuser_name,statusが正しく送られていたらtrue？
     if (isset($_POST['user_name']) && isset($_POST['status'])) {
@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         date('Y-m-d'),
                     ));
                     $out_record = $search_out_time->fetch();
+                    
                     if ($in_record == false) {
                         $error = 'code3';
                     } elseif ($out_record != false) {
@@ -65,12 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         $error = 'code2';
                     }
                     break;
-            }   
+            }
+
         } else {
             $error = 'code1';
         }
     }
 }
+
+$admin = $db->query('SELECT id FROM admin LIMIT 1');
+$admin = $admin->fetch();
 $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_record.employee_id=employees.id ORDER BY date DESC, time DESC');
 ?>
 
@@ -85,49 +90,52 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
 <body link="#337ab7" vlink="#337ab7">
     <header>
         <a href="/login_app/admin/sign_in.php">管理者ログイン</a>
-        <a href="/login_app/admin/sign_up.php">管理者登録</a>
+        <?php if ($admin == false): ?>
+            <a href="/login_app/admin/sign_up.php">管理者登録</a>
+        <?php endif; ?>
     </header>
 
-    <div class="wrapper">
     <div class="left">
         <div>
             <h1 id="time"></h1>
         <div>
         <div>
             <form action="" method="POST">
-                <div>
+                <table>
                     <?php if (isset($_COOKIE['status'])): ?>
-                        <input type="radio" class="radio" name="status" value="0" <?php echo $_COOKIE['status'] == 0 ? 'checked' : ''; ?>>出勤
-                        <input type="radio" class="radio" name="status" value="1" <?php echo $_COOKIE['status'] == 1 ? 'checked' : ''; ?>>退勤
+                        <tr>
+                            <td><input type="radio" class="radio" name="status" value="0" <?php echo $_COOKIE['status'] == 0 ? 'checked' : ''; ?>>出勤</td>
+                            <td><input type="radio" class="radio" name="status" value="1" <?php echo $_COOKIE['status'] == 1 ? 'checked' : ''; ?>>退勤</td>
+                        </tr>
                     <?php else: ?>
-                        <input type="radio" class="radio" name="status" value="0" checked>出勤
-                        <input type="radio" class="radio" name="status" value="1">退勤
+                        <tr>
+                            <td><input type="radio" class="radio" name="status" value="0" checked>出勤</td>
+                            <td><input type="radio" class="radio" name="status" value="1">退勤</td>
+                        </tr>
                     <?php endif; ?>
-                </div>
-                <div>
-                    <input type="text" name="user_name" required id="user_name" placeholder="ユーザー名" autocomplete="off" autofocus>
-                </div>
-                <div class="button">
-                    <button type="submit">出勤打刻</button>
-                </div>
+                    <tr>
+                        <td><input type="text" name="user_name" required id="user_name" placeholder="ユーザー名" autocomplete="off" autofocus></td>
+                    </tr>
+                    <tr>
+                        <td><button type="submit">出勤打刻</button></td>
+                    </tr>
+                </table>
             </form>
         </div>
     </div>
-
-    <div class="right">
-        <div class="time_records">
-            <table>
-                <?php while ($t = $time_records->fetch()): ?>
-                    <?php $status = $t['status'] == 0 ? '出勤' : '退勤' ?>
-                    <tr>
-                        <td><?php echo $t['last_name'] . ' ' . $t['first_name']; ?></td>
-                        <td><?php echo $t['date']. ' ' . $t['time']; ?></td>
-                        <td id="status" class="in"><?php echo $status; ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            </table>
-       </div>
-    </div>
+    
+    <div class="time_records">
+        <table>
+            <?php while ($t = $time_records->fetch()): ?>
+                <?php $status = $t['status'] == 0 ? '出勤' : '退勤' ?>
+                <?php $class = $t['status'] == 0 ? 'in' : 'out' ?>
+                <tr>
+                    <td><?php echo $t['last_name'] . ' ' . $t['first_name']; ?></td>
+                    <td><?php echo $t['date']. ' ' . $t['time']; ?></td>
+                    <td id="status" class="<?php echo $class ?>"><?php echo $status; ?></td>
+                </tr>
+            <?php endwhile; ?>
+        </table>
     </div>
 
     <script>
