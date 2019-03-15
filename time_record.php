@@ -1,7 +1,7 @@
 <?php
 require('dbconnect.php');
 
-$error = '';
+$error = null;
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // POSTでuser_name,statusが正しく送られていたらtrue？
     if (isset($_POST['user_name']) && isset($_POST['status'])) {
@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         date('Y-m-d'),
                     ));
                     $in_record = $search_in_time->fetch();
+                    
                     $search_out_time = $db->prepare('SELECT * FROM time_record WHERE employee_id=? AND date=? AND status="1"');
                     $search_out_time->execute(array(
                         $emp['id'],
@@ -73,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
     }
 }
-
 $admin = $db->query('SELECT id FROM admin LIMIT 1');
 $admin = $admin->fetch();
 $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_record.employee_id=employees.id ORDER BY date DESC, time DESC');
@@ -98,6 +98,7 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
     <div class="left">
         <div>
             <h1 id="time"></h1>
+            <p>username: yonekawaisamu</p>
         <div>
         <div>
             <form action="" method="POST">
@@ -137,7 +138,7 @@ $time_records = $db->query('SELECT * FROM time_record, employees WHERE time_reco
             <?php endwhile; ?>
         </table>
     </div>
-
+   
     <script>
         let today          = new Date();
         let number         = today.getDay();

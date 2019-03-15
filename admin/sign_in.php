@@ -39,6 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body link="#337ab7" vlink="#337ab7">
     <header>
         <a href="/login_app/time_record.php">タイムカード</a>
+        <p>username: test1</p>
+        <p>pass: testtest</p>
     </header>
     <h1>管理者ログイン</h1>
 
